@@ -10,14 +10,7 @@ from datasets import load_dataset
 import time
 from cuda_check import CudaChecker
 
-MODEL_NAME = "sberbank-ai/rugpt3medium_based_on_gpt2"
-DATASET_PATH = "dataset.txt"
-OUTPUT_DIR = "./rugpt2-telegram"
-
-EPOCHS = 2
-BATCH_SIZE = 8
-LR = 4e-5
-MAX_LENGTH = 24
+import config
 
 # =========================
 print("=" * 50)
@@ -70,7 +63,7 @@ def tokenize(batch):
         batch["text"],
         truncation=True,
         padding="max_length",
-        max_length=MAX_LENGTH
+        max_length=config.MAX_LENGTH
     )
 
 tokenized_dataset = dataset.map(
@@ -99,11 +92,11 @@ print("DataCollator готов")
 print("\n[6/7] Настройка параметров обучения...")
 
 training_args = TrainingArguments(
-    output_dir=OUTPUT_DIR,
+    output_dir=config.OUTPUT_DIR,
     overwrite_output_dir=True,
-    num_train_epochs=EPOCHS,
-    per_device_train_batch_size=BATCH_SIZE,
-    learning_rate=LR,
+    num_train_epochs=config.EPOCHS,
+    per_device_train_batch_size=config.BATCH_SIZE,
+    learning_rate=config.LR,
     logging_steps=100,
     save_steps=500,
     save_total_limit=2,
@@ -139,6 +132,6 @@ print(f"Время обучения: {(end_time - start_time)/60:.2f} минут
 # СОХРАНЕНИЕ
 # =========================
 print("\nСохранение модели...")
-trainer.save_model(OUTPUT_DIR)
-tokenizer.save_pretrained(OUTPUT_DIR)
+trainer.save_model(config.OUTPUT_DIR)
+tokenizer.save_pretrained(config.OUTPUT_DIR)
 print("Модель сохранена!")
