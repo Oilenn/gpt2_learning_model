@@ -1,13 +1,12 @@
-# test
-MODEL_PATH = "rugpt2-telegram"
-MAX_NEW_TOKENS = 28
+from dataclasses import dataclass
+from pathlib import Path
 
-# train
-MODEL_NAME = "sberbank-ai/rugpt3medium_based_on_gpt2"
-DATASET_PATH = "dataset.txt"
-OUTPUT_DIR = "./rugpt2-telegram"
-
-EPOCHS = 2
-BATCH_SIZE = 8
-LR = 4e-5
-MAX_LENGTH = 24
+@dataclass
+class TrainingConfig:
+    dataset: Path
+    output_dir: Path
+    model: str = "sberbank-ai/rugpt3medium_based_on_gpt2"
+    epochs: int = 2
+    batch_size: int = 8
+    learning_rate: float = 4e-5
+    max_length: int = 256
