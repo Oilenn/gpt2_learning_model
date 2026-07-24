@@ -3,8 +3,8 @@ from pathlib import Path
 
 @dataclass
 class TrainingConfig:
-    dataset: Path
-    output_dir: Path
+    dataset: Path = Path("dataset")
+    output_dir: Path = Path("trained_models")
     model: str = "sberbank-ai/rugpt3medium_based_on_gpt2"
     epochs: int = 2
     batch_size: int = 8

@@ -1,5 +1,6 @@
 import torch
 
+
 def get_device():
     """Определяет лучшее доступное устройство"""
     if torch.cuda.is_available():
@@ -8,7 +9,7 @@ def get_device():
         print(f"Используемое устройство CUDA: {device_name}")
         return torch.device('cuda')
     else:
-        print("Используется CPU...")
+        print(f"Используется CPU (CUDA недоступна, попробуйте поставить корректную версию torch)")
         return torch.device('cpu')
 
 def check():
