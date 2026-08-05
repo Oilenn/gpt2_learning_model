@@ -209,3 +209,10 @@ __marimo__/
 checkpoint
 
 .idea
+/src/gpt2_fine_tune/trained_models/checkpoint-2/
+/src/gpt2_fine_tune/trained_models/config.json
+/src/gpt2_fine_tune/trained_models/generation_config.json
+/src/gpt2_fine_tune/trained_models/model.safetensors
+/src/gpt2_fine_tune/trained_models/tokenizer.json
+/src/gpt2_fine_tune/trained_models/tokenizer_config.json
+/src/gpt2_fine_tune/trained_models/training_args.bin

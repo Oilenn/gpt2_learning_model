@@ -1,25 +1,21 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from utils.cuda_data import Cuda_data
 
-import config
+from config import TrainingConfig
 
 class LLM:
     tokenizer = None
     model = None
 
     def __init__(self):
-        self.cuda = Cuda_data()
-        self.cuda.check()
         self.load_model()
 
     def load_model(self):
         print("Загружаем модель...")
-        self.tokenizer = AutoTokenizer.from_pretrained(config.MODEL_PATH)
-        self.model = AutoModelForCausalLM.from_pretrained(config.MODEL_PATH)
+        self.tokenizer = AutoTokenizer.from_pretrained(TrainingConfig.model)
+        self.model = AutoModelForCausalLM.from_pretrained(TrainingConfig.model)
 
         # Исправлено: используем self.cuda.device как объект, а не функцию
-        self.model.to(self.cuda.device)
         self.model.eval()
         print("Модель загружена!")
 
@@ -27,12 +23,12 @@ class LLM:
     # ГЕНЕРАЦИЯ
     # =========================
     def generate_answer(self, prompt):
-        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.cuda.device)
+        inputs = self.tokenizer(prompt, return_tensors="pt")
 
         with torch.no_grad():
             output_ids = self.model.generate(
                 **inputs,
-                max_new_tokens=config.MAX_NEW_TOKENS,
+                max_new_tokens=20,
                 do_sample=True,
                 temperature=0.7,
                 top_p=0.8,
@@ -68,3 +64,7 @@ class LLM:
             return "🤔"
 
         return response
+
+if __name__ == "__main__":
+    l = LLM()
+    print(l.generate_answer())
