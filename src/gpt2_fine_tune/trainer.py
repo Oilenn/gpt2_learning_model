@@ -13,7 +13,6 @@ from transformers import (
     DataCollatorForLanguageModeling,
 )
 
-
 class FineTuner:
     """Класс для начала тонкой настройки"""
 
@@ -104,12 +103,21 @@ class TrainTune:
         print("\n[1/7] Загрузка токенизатора...")
 
         try:
-            self.tokenizer = AutoTokenizer.from_pretrained(self.config.model)
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.config.model
+            )
+
             if self.tokenizer.pad_token is None:
-                self.tokenizer.pad_token = self.tokenizer.eos_token
+                self.tokenizer.pad_token = (
+                    self.tokenizer.eos_token
+                )
+
+            self.tokenizer.padding_side = "right"
+
         except Exception as error:
             raise RuntimeError(
-                f"Не удалось загрузить токенизатор из {self.config.model!s}"
+                f"Не удалось загрузить токенизатор "
+                f"{self.config.model}"
             ) from error
 
         print("Токенизатор загружен!")
@@ -117,12 +125,20 @@ class TrainTune:
 
     def load_model(self):
         print("\n[2/7] Загрузка модели...")
+
         try:
-            model = AutoModelForCausalLM.from_pretrained(self.config.model)
-            model.resize_token_embeddings(len(self.tokenizer))
+            model = AutoModelForCausalLM.from_pretrained(
+                self.config.model
+            )
+
+            model.resize_token_embeddings(
+                len(self.tokenizer)
+            )
+
         except Exception as error:
             raise RuntimeError(
-                f"Не удалось загрузить модель из {self.config.model!s}"
+                f"Не удалось загрузить модель "
+                f"{self.config.model}"
             ) from error
 
         print("Модель загружена!")
